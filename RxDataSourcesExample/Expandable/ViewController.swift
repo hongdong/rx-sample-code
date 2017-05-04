@@ -23,6 +23,8 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        test()
+        
         do {
             tableView.estimatedRowHeight = 44
             tableView.rowHeight = UITableViewAutomaticDimension
@@ -33,17 +35,21 @@ class ViewController: UIViewController {
 
             dataSource.configureCell = { dataSource, tableView, indexPath, item in
                 switch item.type {
+                    
                 case let .display(title, type, _):
                     let infoCell = tableView.dequeueReusableCell(withIdentifier: R.reuseIdentifier.normalCell, for: indexPath)!
                     infoCell.detailTextLabel?.text = type.subTitle
                     if let textLabel = infoCell.textLabel {
                         title.asObservable()
-                            .bindTo(textLabel.rx.text)
+                            .bind(to: textLabel.rx.text)
                             .disposed(by: infoCell.rx.prepareForReuseBag)
                     }
                     return infoCell
+                    
                 case let .input(input):
+                    
                     switch input {
+                        
                     case let .datePick(date):
                         let datePickerCell = tableView.dequeueReusableCell(withIdentifier: R.reuseIdentifier.datePickerCell, for: indexPath)!
                         (datePickerCell.rx.date <-> date).disposed(by: datePickerCell.rx.prepareForReuseBag)
@@ -116,11 +122,45 @@ class ViewController: UIViewController {
             let secondSection = secondSectionItems.map { ProfileSectionModel(model: .preferences, items: $0) }
             let thirdSection = thirdSectionItems.map { ProfileSectionModel(model: .workExperience, items: $0) }
 
+            
             Observable.combineLatest(firstSection, secondSection, thirdSection) { [$0, $1, $2] }
-                .bindTo(tableView.rx.items(dataSource: dataSource))
+                .bind(to: tableView.rx.items(dataSource: dataSource))
                 .disposed(by: rx.disposeBag)
         }
 
+    }
+    
+    func test() {
+        let sequenceInt = Observable.of(1, 2)
+        
+        let sequenceString0 = Variable(0)
+        
+        let sequenceString1 = Variable(1)
+
+        
+        sequenceInt
+            .flatMap { (x: Int) -> Observable<Int> in
+                print("from sequenceInt \(x)")
+                if 1 == x {
+                    return sequenceString0.asObservable()
+                }else{
+                    return sequenceString1.asObservable()
+                }
+            }
+            .subscribe {
+                print($0)
+            }
+            .addDisposableTo(rx.disposeBag)
+        
+        sequenceString0.value = 0
+        sequenceString1.value = 1
+        sequenceString0.value = 0
+        sequenceString1.value = 1
+        sequenceString0.value = 0
+        sequenceString1.value = 1
+        sequenceString0.value = 0
+        sequenceString1.value = 1
+        
     }
 
 }

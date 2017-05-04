@@ -63,7 +63,7 @@ class TodoTableViewController: UITableViewController {
                 }
                 .startWith(defaultTodoList)
                 .map { [TodoSectionModel(model: "", items: $0)] }
-                .bindTo(tableView.rx.items(dataSource: dataSource))
+                .bind(to: tableView.rx.items(dataSource: dataSource))
                 .disposed(by: rx.disposeBag)
         }
 

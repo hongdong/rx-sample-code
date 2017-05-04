@@ -52,6 +52,10 @@ class CellButtonClickTableViewController: UITableViewController {
     struct Info {
         let name: String
         let url: URL
+        
+        func abc() {
+            
+        }
     }
 
     override func viewDidLoad() {

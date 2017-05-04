@@ -33,8 +33,7 @@ struct IntItem {
 
 // MARK: Just extensions to say how to determine identity and how to determine is entity updated
 
-extension NumberSection
-    : AnimatableSectionModelType {
+extension NumberSection : AnimatableSectionModelType {
     typealias Item = IntItem
     typealias Identity = String
 
@@ -59,9 +58,7 @@ extension NumberSection
     }
 }
 
-extension IntItem
-    : IdentifiableType
-    , Equatable {
+extension IntItem : IdentifiableType, Equatable {
     typealias Identity = Int
 
     var identity: Int {

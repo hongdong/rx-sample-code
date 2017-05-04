@@ -25,10 +25,10 @@ class CellIdentifierViewController: UIViewController {
             ])
 
         items
-            .bindTo(tableView.rx.items(cellIdentifier: "BasicCell", cellType: UITableViewCell.self)) { (row, element, cell) in
-                cell.textLabel?.text = "\(element) @ row \(row)"
-            }
-            .disposed(by: rx.disposeBag)
+        .bind(to:tableView.rx.items(cellIdentifier:"BasicCell", cellType:UITableViewCell.self)) { (row, element, cell) in
+            cell.textLabel?.text = "\(element) @ row \(row)"
+        }
+        .disposed(by: rx.disposeBag)
     }
 
 }

@@ -44,7 +44,7 @@ class CustomRefreshViewController: UIViewController {
             .map { a in
                 return RefreshSectionList(sectionModels: a.randomizer.sections, isRefresh: a.isRefresh)
             }
-            .bindTo(tableView.rx.items(dataSource: dataSource))
+            .bind(to: tableView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
     
     }

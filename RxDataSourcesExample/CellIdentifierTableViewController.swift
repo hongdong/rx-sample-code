@@ -36,7 +36,7 @@ class CellIdentifierTableViewController: UITableViewController {
             ])
 
         items
-            .bindTo(tableView.rx.items(cellIdentifier: "TipTableViewCell", cellType: TipTableViewCell.self)) { (row, element, cell) in
+            .bind(to:tableView.rx.items(cellIdentifier: "TipTableViewCell", cellType: TipTableViewCell.self)) { (row, element, cell) in
                 cell.title = element.title
                 cell.isOn = element.isOn
             }

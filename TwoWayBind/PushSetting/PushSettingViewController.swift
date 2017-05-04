@@ -34,7 +34,7 @@ class PushSettingViewController: UIViewController {
         super.viewDidLoad()
 
         Observable.just(pushSettingData)
-            .bindTo(tableView.rx.items(dataSource: dataSource))
+            .bind(to: tableView.rx.items(dataSource: dataSource))
             .disposed(by: rx.disposeBag)
 
     }
@@ -46,7 +46,7 @@ extension PushSettingViewController: UITableViewDelegate {
         header.name = dataSource[section].model
         let selectItems = dataSource[section].items.map { $0.select }
         Observable.combineLatest(selectItems.map { $0.asObservable() }) { $0.contains(true) }
-            .bindTo(header.rx.isSelected)
+            .bind(to: header.rx.isSelected)
             .disposed(by: header.rx.prepareForReuseBag)
 
         header.rx

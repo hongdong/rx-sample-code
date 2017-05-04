@@ -43,7 +43,7 @@ class TapCellTableViewController: UITableViewController {
                 ])
 
             sections
-                .bindTo(tableView.rx.items(dataSource: dataSource))
+                .bind(to: tableView.rx.items(dataSource: dataSource))
                 .disposed(by: rx.disposeBag)
         }
 
@@ -89,6 +89,7 @@ class TapCellTableViewController: UITableViewController {
                 .map { (at: $0, animated: true) }
                 .subscribe(onNext: tableView.deselectRow)
                 .disposed(by: rx.disposeBag)
+            
         }
 
     }

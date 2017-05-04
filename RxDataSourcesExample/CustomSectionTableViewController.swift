@@ -40,7 +40,7 @@ class CustomSectionTableViewController: UITableViewController {
                 ])
 
             sections
-                .bindTo(tableView.rx.items(dataSource: dataSource))
+                .bind(to: tableView.rx.items(dataSource: dataSource))
                 .disposed(by: rx.disposeBag)
         }
 
@@ -55,6 +55,7 @@ class CustomSectionTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 60
     }
+    
     
 }
 

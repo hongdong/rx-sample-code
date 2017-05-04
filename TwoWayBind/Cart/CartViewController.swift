@@ -50,37 +50,41 @@ class CartViewController: UIViewController {
         let products = [1, 2, 3, 4]
             .map { ProductInfo(id: 1000 + $0, name: "Product\($0)", unitPrice: $0 * 100, count: Variable(1)) }
 
+        //数据源信号
         let sectionInfo = Observable.just([ProductSectionModel(model: "", items: products)])
             .shareReplay(1)
 
         dataSource.configureCell = { _, tableView, indexPath, product in
             let cell = tableView.dequeueReusableCell(withIdentifier: R.reuseIdentifier.productTableViewCell, for: indexPath)!
-            cell.name = product.name
-            cell.setUnitPrice(product.unitPrice)
-            (cell.rx_count <-> product.count).disposed(by: cell.rx.prepareForReuseBag)
+            cell.product = product
             return cell
         }
 
         sectionInfo
-            .bindTo(tableView.rx.items(dataSource: dataSource))
+            .bind(to: tableView.rx.items(dataSource: dataSource))
             .disposed(by: rx.disposeBag)
 
-        let totalPrice = sectionInfo
-            .map { $0.flatMap { $0.items } }
-            .flatMap { $0.reduce(.just(0)) { acc, x in
-            Observable.combineLatest(acc, x.count.asObservable().map { x.unitPrice * $0 }, resultSelector: +)
+        let totalPrice = sectionInfo.map{
+            $0.flatMap{
+                $0.items
+            }
+        }.flatMap{
+            $0.reduce(.just(0)){acc,x in
+                Observable.combineLatest(acc,x.count.asObservable().map{
+                    x.unitPrice * $0
+                },resultSelector: +)
             }
         }
-            .shareReplay(1)
-
+        .shareReplay(1)
+        
         totalPrice
             .map { "总价：\($0) 元" }
-            .bindTo(totalPriceLabel.rx.text)
+            .bind(to: totalPriceLabel.rx.text)
             .disposed(by: rx.disposeBag)
 
         totalPrice
             .map { $0 != 0 }
-            .bindTo(purchaseButton.rx.isEnabled)
+            .bind(to: purchaseButton.rx.isEnabled)
             .disposed(by: rx.disposeBag)
 
         tableView.rx.enableAutoDeselect().disposed(by: rx.disposeBag)

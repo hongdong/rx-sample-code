@@ -29,12 +29,12 @@ open class RxTableViewSectionedAnimatedOrReloadDataSource<S: AnimatableSectionMo
     public var animationConfiguration = AnimationConfiguration()
     
     open func tableView(_ tableView: UITableView, observedEvent: Event<Element>) {
+        
         UIBindingObserver(UIElement: self) { dataSource, newSectionlist in
             if newSectionlist.isRefresh {
                 dataSource.setSections(newSectionlist.sectionModels)
                 tableView.reloadData()
-            }
-            else {
+            }else {
                 DispatchQueue.main.async {
                     let oldSections = dataSource.sectionModels
                     do {

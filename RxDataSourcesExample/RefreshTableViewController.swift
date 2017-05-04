@@ -93,6 +93,7 @@ class RefreshTableViewController: UITableViewController {
                 cell.author = element.author
                 return cell
             }
+            
         }
 
         do {
@@ -120,17 +121,17 @@ class RefreshTableViewController: UITableViewController {
                 .shareReplay(1)
 
             response
-                .bindTo(tableView.rx.items(dataSource: dataSource))
+                .bind(to: tableView.rx.items(dataSource: dataSource))
                 .disposed(by: rx.disposeBag)
-
+            
             Observable.from([refresh.skip(1).map { true }, response.skip(1).map { _ in false }])
                 .merge()
-                .bindTo(refreshControl.rx.isRefreshing)
+                .bind(to: refreshControl.rx.isRefreshing)
                 .disposed(by: rx.disposeBag)
 
             Observable.from([refresh.take(1).map { true }, response.take(1).map { _ in false }])
                 .merge()
-                .bindTo(isLoading(for: tableView))
+                .bind(to: isLoading(for: tableView))
                 .disposed(by: rx.disposeBag)
         }
 

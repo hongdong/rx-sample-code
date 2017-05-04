@@ -50,7 +50,7 @@ class SelectPaymentViewController: UIViewController {
             let selectedPayment = ds[ip.section].model.select.asObservable()
             selectedPayment
                 .map { $0 == payment }
-                .bindTo(cell.rx.isSelectedPayment)
+                .bind(to: cell.rx.isSelectedPayment)
                 .disposed(by: cell.rx.prepareForReuseBag)
             return cell
         }
@@ -59,7 +59,7 @@ class SelectPaymentViewController: UIViewController {
 
         tableView
             .rx.modelSelected(Payment.self)
-            .bindTo(selectPayment.select)
+            .bind(to: selectPayment.select)
             .disposed(by: rx.disposeBag)
 
         let paymentSection = PaymentSectionModel(
@@ -67,7 +67,7 @@ class SelectPaymentViewController: UIViewController {
             items: [.alipay, .wechat, .applepay, .unionpay])
 
         Observable.just([paymentSection])
-            .bindTo(tableView.rx.items(dataSource: dataSource))
+            .bind(to: tableView.rx.items(dataSource: dataSource))
             .disposed(by: rx.disposeBag)
 
         tableView.rx.enableAutoDeselect().disposed(by: rx.disposeBag)
@@ -75,7 +75,7 @@ class SelectPaymentViewController: UIViewController {
         do {
             selectPayment.select.asObservable()
                 .map { $0.name }
-                .bindTo(self.rx.title)
+                .bind(to: self.rx.title)
                 .disposed(by: rx.disposeBag)
         }
     }

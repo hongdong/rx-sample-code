@@ -11,60 +11,40 @@ import RxSwift
 import RxCocoa
 
 class ProductTableViewCell: UITableViewCell {
-
-    var name: String? {
-        get {
-            return nameLabel?.text
-        }
-        set {
-            nameLabel?.text = newValue
-        }
-    }
-
-    private var _count: Int = 0 {
+    
+    var product:ProductInfo! {
         didSet {
-            if _count < 1 {
+            if product == nil {
                 fatalError()
             }
-            minusButton.isEnabled = _count - 1 != 0
-            countLabel.text = String(_count)
+            nameLabel?.text = product.name
+            unitPriceLabel.text = "单价：\(product.unitPrice) 元"
+            product.count.asObservable()
+                .subscribe(onNext: {
+                if $0 < 0 {
+                    fatalError()
+                }
+                self.minusButton.isEnabled = $0 != 0
+                self.countLabel.text = String($0)
+                })
+                .disposed(by: self.rx.prepareForReuseBag)
+            
         }
     }
-
-    private var countChanged: ((Int) -> Void)?
-
-    var rx_count: ControlProperty<Int> {
-        let source = Observable<Int>.create { [weak self](observer) in
-            self?.countChanged = observer.onNext
-            return Disposables.create()
-        }
-            .distinctUntilChanged()
-
-        let sink = UIBindingObserver(UIElement: self) { cell, count in
-            cell._count = count
-        }
-            .asObserver()
-
-        return ControlProperty(values: source, valueSink: sink)
-    }
-
+    
     @IBOutlet private weak var nameLabel: UILabel!
     @IBOutlet private weak var unitPriceLabel: UILabel!
     @IBOutlet private weak var countLabel: UILabel!
     @IBOutlet private weak var minusButton: UIButton! {
         didSet {
-            minusButton.addTarget(self, action: #selector(ProductTableViewCell.minusButtonTap), for: .touchUpInside)
+            minusButton.addTarget(self, action: #selector(ProductTableViewCell.minusButtonTap), for:.touchUpInside)
         }
     }
 
     @IBOutlet private weak var plusButton: UIButton! {
         didSet {
-            plusButton.addTarget(self, action: #selector(ProductTableViewCell.plusButtonTap), for: .touchUpInside)
+            plusButton.addTarget(self, action: #selector(ProductTableViewCell.plusButtonTap), for:.touchUpInside)
         }
-    }
-
-    func setUnitPrice(_ unitPrice: Int) {
-        unitPriceLabel.text = "单价：\(unitPrice) 元"
     }
 
     private dynamic func minusButtonTap() {
@@ -75,11 +55,10 @@ class ProductTableViewCell: UITableViewCell {
         changeCount(+=)
     }
 
-    private typealias Action = (_ lhs: inout Int, _ rhs: Int) -> Void
+    private typealias Action = ((_ lhs: inout Int, _ rhs: Int) -> Void)
 
     private func changeCount(_ action: Action) {
-        action(&_count, 1)
-        countChanged?(_count)
+        action(&product.count.value, 1)
     }
 
 }
