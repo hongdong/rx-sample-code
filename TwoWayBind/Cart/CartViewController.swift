@@ -40,13 +40,17 @@ class CartViewController: UIViewController {
 
     @IBOutlet private weak var tableView: UITableView!
     @IBOutlet private weak var totalPriceLabel: UILabel!
-    @IBOutlet private weak var purchaseButton: UIButton!
+    @IBOutlet private weak var purchaseButton: UIButton!{
+        didSet{
+            
+        }
+    }
 
     private let dataSource = RxTableViewSectionedReloadDataSource<ProductSectionModel>()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         let products = [1, 2, 3, 4]
             .map { ProductInfo(id: 1000 + $0, name: "Product\($0)", unitPrice: $0 * 100, count: Variable(1)) }
 

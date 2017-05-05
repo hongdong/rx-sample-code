@@ -20,12 +20,12 @@ class ProductTableViewCell: UITableViewCell {
             nameLabel?.text = product.name
             unitPriceLabel.text = "单价：\(product.unitPrice) 元"
             product.count.asObservable()
-                .subscribe(onNext: {
+                .subscribe(onNext: { [weak self] in
                 if $0 < 0 {
                     fatalError()
                 }
-                self.minusButton.isEnabled = $0 != 0
-                self.countLabel.text = String($0)
+                self?.minusButton.isEnabled = $0 != 0
+                self?.countLabel.text = String($0)
                 })
                 .disposed(by: self.rx.prepareForReuseBag)
             
@@ -37,14 +37,26 @@ class ProductTableViewCell: UITableViewCell {
     @IBOutlet private weak var countLabel: UILabel!
     @IBOutlet private weak var minusButton: UIButton! {
         didSet {
-            minusButton.addTarget(self, action: #selector(ProductTableViewCell.minusButtonTap), for:.touchUpInside)
+            minusButton.rx.tap
+                .subscribe(onNext: { [weak self] in
+                    self?.minusButtonTap()
+                })
+                .disposed(by: self.rx.prepareForReuseBag)
         }
     }
 
     @IBOutlet private weak var plusButton: UIButton! {
         didSet {
-            plusButton.addTarget(self, action: #selector(ProductTableViewCell.plusButtonTap), for:.touchUpInside)
+            plusButton.rx.tap
+                .subscribe(onNext: { [weak self] in
+                    self?.plusButtonTap()
+                })
+                .disposed(by: self.rx.prepareForReuseBag)
         }
+    }
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
     }
 
     private dynamic func minusButtonTap() {

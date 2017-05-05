@@ -28,7 +28,7 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         do { // MARK: 展示时间
             viewModel.displayTime
                 .bindTo(displayTimeLabel.rx.text)

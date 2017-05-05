@@ -1,11 +1,11 @@
-github "ReactiveX/RxSwift" ~> 3.2
-github "mac-cain13/R.swift.Library" ~> 3.0
-github "SwiftyJSON/SwiftyJSON" ~> 3.1
-github "DianQK/RxExtensions" ~> 0.4
-github "RxSwiftCommunity/RxDataSources" ~> 1.0
-github "DianQK/RxAutomaton" ~> 0.2
-github "Alamofire/Alamofire" ~> 4.3
-github "jdg/MBProgressHUD" ~> 1.0
-github "SnapKit/SnapKit" ~> 3.1
-github "nvzqz/RandomKit" ~> 3.0
+github "ReactiveX/RxSwift"
+github "mac-cain13/R.swift.Library"
+github "SwiftyJSON/SwiftyJSON"
+github "DianQK/RxExtensions"
+github "RxSwiftCommunity/RxDataSources"
+github "DianQK/RxAutomaton"
+github "Alamofire/Alamofire"
+github "jdg/MBProgressHUD"
+github "SnapKit/SnapKit"
+github "nvzqz/RandomKit"
 github "questbeat/QBImagePicker" "master"

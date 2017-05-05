@@ -52,6 +52,7 @@ extension Reactive where Base: UISwitch {
     public var isOn: ControlProperty<Bool> {
         let source = self.controlEvent(.valueChanged)
             .map { [unowned uiSwitch = self.base] in uiSwitch.isOn }
+            .distinctUntilChanged()
         let sink = UIBindingObserver<UISwitch, Bool>(UIElement: self.base) { uiSwitch, isOn in
             guard uiSwitch.isOn != isOn else { return }
             uiSwitch.setOn(isOn, animated: true)
