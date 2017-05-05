@@ -22,7 +22,12 @@ class SelectTableViewCell: UITableViewCell {
     }
 
     @IBOutlet private weak var nameLabel: UILabel!
-    @IBOutlet fileprivate weak var selectButton: UIButton!
+    @IBOutlet fileprivate weak var selectButton: UIButton!{
+        didSet{
+            selectButton.layer.borderWidth = 1.0
+            selectButton.layer.borderColor = UIColor.black.cgColor
+        }
+    }
 
 }
 
