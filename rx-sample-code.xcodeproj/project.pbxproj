@@ -1177,15 +1177,15 @@
 			isa = PBXGroup;
 			children = (
 				266B1C251E4192D60034442F /* BasicViewModel.swift */,
+				266B1C2E1E4192D60034442F /* TimingViewModel.swift */,
+				266B1C281E4192D60034442F /* FinalViewModel.swift */,
 				266B1C261E4192D60034442F /* Button+Style.swift */,
 				266B1C271E4192D60034442F /* Cell+Rx.swift */,
-				266B1C281E4192D60034442F /* FinalViewModel.swift */,
 				266B1C291E4192D60034442F /* Helpers.swift */,
 				266B1C2A1E4192D60034442F /* Input.swift */,
 				266B1C2B1E4192D60034442F /* State.swift */,
 				266B1C2C1E4192D60034442F /* StopwatchTypeListViewController.swift */,
 				266B1C2D1E4192D60034442F /* StopwatchViewModelProtocol.swift */,
-				266B1C2E1E4192D60034442F /* TimingViewModel.swift */,
 				266B1C2F1E4192D60034442F /* Tool.swift */,
 				266B1C151E4192B40034442F /* AppDelegate.swift */,
 				266B1C171E4192B40034442F /* ViewController.swift */,
@@ -3129,6 +3129,7 @@
 				260FAEC01E8A7435005010AA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		2618573A1E779ABE002CAFD3 /* Build configuration list for PBXNativeTarget "GitHubSearchRepositoriesX" */ = {
 			isa = XCConfigurationList;

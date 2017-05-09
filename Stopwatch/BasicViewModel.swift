@@ -24,9 +24,11 @@ struct BasicViewModel: StopwatchViewModelProtocol {
     
     init(input: (startAStopTrigger: Observable<Void>, resetALapTrigger: Observable<Void>)) {
         
-        let state = input.startAStopTrigger
-            .scan(State.stopped) {
-                switch $0.0 {
+        //按钮绑定一个状态
+        
+        let state = input.startAStopTrigger  //scan可以记录上次状态并进行切换
+            .scan(State.stopped) {acum, elem in
+                switch acum {
                 case .stopped: return State.timing
                 case .timing: return State.stopped
                 }
@@ -55,7 +57,7 @@ struct BasicViewModel: StopwatchViewModelProtocol {
                     return Style.Button(title: "Stop", titleColor: Tool.Color.red, isEnabled: true, backgroungImage: #imageLiteral(resourceName: "red"))
                 }
         }
-        resetALapStyle = Observable.just(Style.Button(title: "", titleColor: UIColor.white, isEnabled: false, backgroungImage: #imageLiteral(resourceName: "gray")))
+        resetALapStyle = Observable.just(Style.Button(title: "不可用", titleColor: UIColor.white, isEnabled: false, backgroungImage: #imageLiteral(resourceName: "gray")))
         displayElements = Observable.empty()
         
     }

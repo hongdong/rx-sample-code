@@ -28,8 +28,12 @@ class PushSettingViewController: UIViewController {
     
     fileprivate let dataSource = RxTableViewSectionedReloadDataSource<PushSettingSectionModel> { _, tableView, indexPath, value in
         let cell = tableView.dequeueReusableCell(withIdentifier: R.reuseIdentifier.selectTableViewCell, for: indexPath)!
-        cell.name = value.pushType.name
-        (cell.rx.select <-> value.select).disposed(by: cell.rx.prepareForReuseBag)
+        
+        do{
+            cell.name = value.pushType.name
+            (cell.rx.select <-> value.select).disposed(by: cell.rx.prepareForReuseBag)
+        }
+   
         return cell
     }
 
@@ -45,8 +49,10 @@ class PushSettingViewController: UIViewController {
 
 extension PushSettingViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        
         let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: SelectTableViewHeaderFooterView.reuseIdentifier) as! SelectTableViewHeaderFooterView
         header.name = dataSource[section].model
+        
         let selectItems = dataSource[section].items.map { $0.select }
         
         Observable.combineLatest(selectItems.map { $0.asObservable() }) { !$0.contains(false) }
@@ -61,6 +67,7 @@ extension PushSettingViewController: UITableViewDelegate {
             .disposed(by: header.rx.prepareForReuseBag)
         
         return header
+        
     }
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {

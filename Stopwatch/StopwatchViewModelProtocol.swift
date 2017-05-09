@@ -13,7 +13,7 @@ protocol StopwatchViewModelProtocol {
     var startAStopStyle: Observable<Style.Button> { get }
     var resetALapStyle: Observable<Style.Button> { get }
     var displayTime: Observable<String> { get }
-    var displayElements: Observable<[(title: Observable<String>, displayTime: Observable<String>, color: Observable<UIColor>)]> { get }
+    var displayElements: Observable<[(title: Observable<String>, displayTime: Observable<String>, color: Observable<UIColor>)]> { get }//数据源
     
     init(input: (startAStopTrigger: Observable<Void>, resetALapTrigger: Observable<Void>))
 }

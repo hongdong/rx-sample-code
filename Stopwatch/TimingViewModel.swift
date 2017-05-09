@@ -46,7 +46,7 @@ struct TimingViewModel: StopwatchViewModelProtocol {
         
         let (inputSignal, inputObserver) = Observable<Input>.pipe()
         
-        automaton = Automaton(state: .reseted, input: inputSignal, mapping: reduce(mappings), strategy: .latest)
+        automaton = Automaton(state:.reseted, input:inputSignal, mapping:reduce(mappings), strategy:.latest)
         
         Observable.from([
             startAStopTrigger

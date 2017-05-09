@@ -25,7 +25,11 @@ class StopwatchTypeListViewController: UIViewController {
         }
     }
     
-    @IBOutlet private weak var listTableView: UITableView!
+    @IBOutlet private weak var listTableView: UITableView!{
+        didSet{
+            listTableView.rx.enableAutoDeselect().disposed(by: rx.disposeBag)
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,21 +41,23 @@ class StopwatchTypeListViewController: UIViewController {
             ])
         
         items
-            .bindTo(listTableView.rx.items(cellIdentifier: "ListTableViewCell")) { index, element, cell in
+            .bind(to:listTableView.rx.items(cellIdentifier: "ListTableViewCell")) { index, element, cell in
                 cell.textLabel?.text = element.title
             }
             .disposed(by: disposeBag)
 
-        listTableView.rx.itemSelected.map { (at: $0, animated: true) }
-            .subscribe(onNext: listTableView.deselectRow)
-            .disposed(by: disposeBag)
+//        listTableView.rx.itemSelected.map { (at: $0, animated: true) }
+//            .subscribe(onNext: listTableView.deselectRow)
+//            .disposed(by: disposeBag)
         
         listTableView.rx.modelSelected(Item.self)
             .subscribe(onNext: { [unowned self] item in
+                
                 let stopwatchViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ViewController") as! ViewController
                 stopwatchViewController.type = item.type
                 self.show(stopwatchViewController, sender: nil)
-                })
+                
+            })
             .disposed(by: disposeBag)
 
     }
