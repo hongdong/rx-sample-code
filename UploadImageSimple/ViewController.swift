@@ -83,7 +83,7 @@ class ViewController: UIViewController {
 
         cancel // workaround
             .map { "你取消了上传操作" }
-            .bindTo(self.view.rx.message)
+            .bind(to: self.view.rx.message)
             .disposed(by: disposeBag)
 
         uploadActivityIndicator.asDriver()

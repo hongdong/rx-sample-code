@@ -59,7 +59,7 @@ class RetryByUserViewController: UIViewController {
 
         Observable<Int>
             .deferred { () -> Observable<Int> in
-                return Observable.just(Int.random(within: -100...200))
+                return Observable.just(Int((arc4random_uniform(300))-100))
             }
             .map { value -> Int in
                 if value <= 0 {

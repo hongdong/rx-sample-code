@@ -57,6 +57,7 @@ class GitHubSearchRepositoriesViewController: ViewController, UITableViewDelegat
 
 
         let tableView: UITableView = self.tableView
+        
         let loadNextPageTrigger = self.tableView.rx.contentOffset
             .flatMap { _ in
                 return tableView.isNearBottomEdge(edgeOffset: 20.0)

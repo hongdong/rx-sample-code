@@ -67,7 +67,7 @@ class ViewController: UIViewController {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: R.reuseIdentifier.optionCollectionViewCell, for: indexPath)!
             cell.displayImageView.image = element.image
             element.isSelected.asObservable().filterNil()
-                .bindTo(cell.rx.isSelected)
+                .bind(to: cell.rx.isSelected)
                 .disposed(by: cell.prepareForReuseBag)
             return cell
         }
@@ -95,7 +95,7 @@ class ViewController: UIViewController {
         questionsCollectionView.rx.setDelegate(self).disposed(by: rx.disposeBag)
 
         questions.asObservable()
-            .bindTo(questionsCollectionView.rx.items(dataSource: dataSource))
+            .bind(to: questionsCollectionView.rx.items(dataSource: dataSource))
             .disposed(by: rx.disposeBag)
         
         let result = questions.asObservable().map { $0.flatMap { $0.items } }

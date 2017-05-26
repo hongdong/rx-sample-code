@@ -55,7 +55,7 @@ class ViewController: UIViewController {
 
         result
             .observeOn(MainScheduler.instance)
-            .bindTo(contentsTableView.rx.items(dataSource: dataSource))
+            .bind(to: contentsTableView.rx.items(dataSource: dataSource))
             .disposed(by: rx.disposeBag)
 
         do {
@@ -87,7 +87,7 @@ class ViewController: UIViewController {
                 cell.level = item.model.level
                 if item.canExpanded {
                     item.isExpanded.asObservable()
-                        .bindTo(cell.rx.isExpanded)
+                        .bind(to: cell.rx.isExpanded)
                         .disposed(by: cell.prepareForReuseBag)
                 }
                 return cell

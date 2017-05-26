@@ -149,7 +149,7 @@ final class NewFeedVoiceRecordViewController: UIViewController {
                 cancelButton.rx.tap.map { Input.cancel }
                 ])
                 .merge()
-                .bindTo(inputObserver)
+                .bind(to: inputObserver)
                 .disposed(by: disposeBag)
         }
         
@@ -306,7 +306,7 @@ final class NewFeedVoiceRecordViewController: UIViewController {
                     let subSeconds = count - seconds * frequency - minutes * 60 * frequency
                     return String(format: "%02d:%02d.%d", minutes, seconds, subSeconds)
                 }
-                .bindTo(timeLabel.rx.text)
+                .bind(to: timeLabel.rx.text)
                 .disposed(by: disposeBag)
         }
         

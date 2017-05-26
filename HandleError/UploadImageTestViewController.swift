@@ -121,7 +121,7 @@ class UploadImageTestViewController: UIViewController {
             .flatMap { [unowned self] () -> Driver<()> in
                 Observable
                     .deferred({ () -> Observable<Int> in
-                        let url = URL(string: "https://httpbin.org/status/\([200, 503, 599].random!)?type=upload")!
+                        let url = URL(string:"https://httpbin.org/status/\([200, 503, 599].random)?type=upload")!
                         return URLSession.shared.rx.statusCode(url: url)
                     })
                     .map { _ in }
@@ -150,7 +150,7 @@ class UploadImageTestViewController: UIViewController {
             .flatMap { [unowned self] () -> Driver<()> in
                 Observable
                     .deferred({ () -> Observable<Int> in
-                        let url = URL(string: "https://httpbin.org/status/\([200, 503, 408].random!)?type=request")!
+                        let url = URL(string: "https://httpbin.org/status/\([200, 503, 408].random)?type=request")!
                         return URLSession.shared.rx.statusCode(url: url)
                     })
                     .map { _ in }

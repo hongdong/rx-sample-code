@@ -83,14 +83,14 @@ class CollectionViewController: UIViewController {
         do {
             state.asObservable()
                 .map { $0.actionBarTitle }
-                .bindTo(actionBarButtonItem.rx.title)
+                .bind(to: actionBarButtonItem.rx.title)
                 .disposed(by: rx.disposeBag)
 
             actionBarButtonItem
                 .rx.tap
                 .withLatestFrom(state.asObservable())
                 .reverse()
-                .bindTo(state)
+                .bind(to: state)
                 .disposed(by: rx.disposeBag)
         }
 
