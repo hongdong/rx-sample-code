@@ -21,11 +21,11 @@ class ProductTableViewCell: UITableViewCell {
             unitPriceLabel.text = "单价：\(product.unitPrice) 元"
             product.count.asObservable()
                 .subscribe(onNext: { [weak self] in
-                if $0 < 0 {
-                    fatalError()
-                }
-                self?.minusButton.isEnabled = $0 != 0
-                self?.countLabel.text = String($0)
+                    if $0 < 0 {
+                        fatalError()
+                    }
+                    self?.minusButton.isEnabled = $0 != 0
+                    self?.countLabel.text = String($0)
                 })
                 .disposed(by: self.rx.prepareForReuseBag)
             
@@ -67,7 +67,7 @@ class ProductTableViewCell: UITableViewCell {
         changeCount(+=)
     }
 
-    private typealias Action = ((_ lhs: inout Int, _ rhs: Int) -> Void)
+    private typealias Action = (_ lhs: inout Int, _ rhs: Int) -> Void
 
     private func changeCount(_ action: Action) {
         action(&product.count.value, 1)

@@ -26,5 +26,6 @@ let pushSettingData: [PushSettingSectionModel] = {
         PushItemModel(pushType: .favorite, select: Variable(true)),
     ]
     let otherSection = PushSettingSectionModel(model: "全选", items: otherItems)
+    
     return [consumptionSection, otherSection]
 }()

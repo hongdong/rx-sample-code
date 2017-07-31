@@ -12,7 +12,7 @@ import RxCocoa
 import RxDataSources
 import RxExtensions
 
-struct SelectPayment: Hashable, Equatable, IdentifiableType {
+struct SelectPayment: Hashable , IdentifiableType {
     let select: Variable<Payment>//选择哪一个
 
     var hashValue: Int {
@@ -36,7 +36,6 @@ typealias PaymentSectionModel = AnimatableSectionModel<SelectPayment, Payment>
 
 class SelectPaymentViewController: UIViewController {
 
-    @IBOutlet private weak var doneBarButtonItem: UIBarButtonItem!
     @IBOutlet private weak var tableView: UITableView!
 
     private let dataSource = RxTableViewSectionedReloadDataSource<PaymentSectionModel>{ ds, tb, ip, payment in
@@ -44,10 +43,12 @@ class SelectPaymentViewController: UIViewController {
         cell.setPayment(payment)
         let sectionModel = ds[ip.section]//拿到这个组的SectionModel,里面保存了这个组选择的是哪一个
         let selectedPayment = sectionModel.model.select.asObservable()
+        
         selectedPayment
             .map { $0 == payment }
             .bind(to: cell.rx.isSelectedPayment)
             .disposed(by: cell.rx.prepareForReuseBag)
+        
         return cell
     }
 
@@ -69,7 +70,8 @@ class SelectPaymentViewController: UIViewController {
         let selectPayment = SelectPayment(defaultSelected: Payment.alipay)
 
         tableView
-            .rx.modelSelected(Payment.self)
+            .rx
+            .modelSelected(Payment.self)
             .bind(to: selectPayment.select)
             .disposed(by: rx.disposeBag)
 
@@ -81,7 +83,10 @@ class SelectPaymentViewController: UIViewController {
             .bind(to: tableView.rx.items(dataSource: dataSource))
             .disposed(by: rx.disposeBag)
 
-        tableView.rx.enableAutoDeselect().disposed(by: rx.disposeBag)
+        tableView
+            .rx
+            .enableAutoDeselect()
+            .disposed(by: rx.disposeBag)
 
         do {//title
             selectPayment.select.asObservable()

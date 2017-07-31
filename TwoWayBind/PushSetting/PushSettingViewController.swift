@@ -27,6 +27,7 @@ class PushSettingViewController: UIViewController {
     }    
     
     fileprivate let dataSource = RxTableViewSectionedReloadDataSource<PushSettingSectionModel> { _, tableView, indexPath, value in
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: R.reuseIdentifier.selectTableViewCell, for: indexPath)!
         
         do{

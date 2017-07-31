@@ -46,37 +46,45 @@ class CartViewController: UIViewController {
         }
     }
 
-    private let dataSource = RxTableViewSectionedReloadDataSource<ProductSectionModel>()
+    private let dataSource = RxTableViewSectionedReloadDataSource<ProductSectionModel>(){
+        _, tableView, indexPath, product in
+        let cell = tableView.dequeueReusableCell(withIdentifier: R.reuseIdentifier.productTableViewCell, for: indexPath)!
+        cell.product = product
+        return cell
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         let products = [1, 2, 3, 4]
-            .map { ProductInfo(id: 1000 + $0, name: "Product\($0)", unitPrice: $0 * 100, count: Variable(1)) }
+            .map { ProductInfo(id: 1000 + $0, name: "Product\($0)", unitPrice: $0 * 100, count: Variable(0)) }
 
         //数据源信号
-        let sectionInfo = Observable.just([ProductSectionModel(model: "", items: products)])
+        let sectionInfo = Observable.just([ProductSectionModel(model: "Section1", items: products)])
             .shareReplay(1)
 
-        dataSource.configureCell = { _, tableView, indexPath, product in
-            let cell = tableView.dequeueReusableCell(withIdentifier: R.reuseIdentifier.productTableViewCell, for: indexPath)!
-            cell.product = product
-            return cell
-        }
+//        dataSource.configureCell = { _, tableView, indexPath, product in
+//            let cell = tableView.dequeueReusableCell(withIdentifier: R.reuseIdentifier.productTableViewCell, for: indexPath)!
+//            cell.product = product
+//            return cell
+//        }
 
         sectionInfo
             .bind(to: tableView.rx.items(dataSource: dataSource))
             .disposed(by: rx.disposeBag)
 
-        let totalPrice = sectionInfo.map{
+        
+        let totalPrice = sectionInfo.map{  //先把所有组中的元素摊平成一个数组
             $0.flatMap{
                 $0.items
             }
         }.flatMap{
             $0.reduce(.just(0)){acc,x in
+                
                 Observable.combineLatest(acc,x.count.asObservable().map{
                     x.unitPrice * $0
                 },resultSelector: +)
+                
             }
         }
         .shareReplay(1)
